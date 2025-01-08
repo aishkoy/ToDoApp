@@ -27,6 +27,17 @@ public class TaskManager {
         System.out.println("Список всех задач: ");
         tasks.forEach(System.out::println);
     }
+
+    public void createTask() {
+        String name = IOManager.getValidInput("[\\s\\S]", "Введите имя задачи: ");
+        String description = IOManager.getValidInput("[\\s\\S]", "Введите описание задачи: ");
+        String priority = choicePriority();
+        LocalDate creationDate = getValidDate("Введите дату создания задачи: ");
+        LocalDate completionDate = getValidDate("Введите дедлайн задачи: ");
+
+        tasks.add(new Task(name, description, priority, creationDate, completionDate));
+    }
+
     private String choicePriority() {
         System.out.println("Выберите приоритет задачи: ");
         for (Priority priority : Priority.values()) {
