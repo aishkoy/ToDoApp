@@ -30,6 +30,14 @@ public class Task {
         this.state = state;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return String.format("""
