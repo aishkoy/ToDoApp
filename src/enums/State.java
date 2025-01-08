@@ -15,8 +15,13 @@ public enum State {
         }
 
         @Override
-        public void changeState(Task task) {
-
+        public void changeState(Task task, State state) throws StateException {
+            if(state == State.IN_PROGRESS) {
+                task.setState(IN_PROGRESS);
+                System.out.println("Статус задачи был успешно изменен на 'в процессе'.");
+            } else if(state == State.DONE) {
+                throw new StateException("Вы не можете сменить статус задачи на 'сделано'!");
+            }
         }
 
         @Override
@@ -34,8 +39,13 @@ public enum State {
         }
 
         @Override
-        public void changeState(Task task) {
-
+        public void changeState(Task task, State state) throws StateException {
+            if (state == State.DONE) {
+                task.setState(DONE);
+                System.out.println("Статус задачи был успешно изменен на 'сделано'.");
+            } else if (state == State.NEW) {
+                throw new StateException("Вы не можете изменить состояние задачи на 'новая'!");
+            }
         }
 
         @Override
@@ -50,8 +60,8 @@ public enum State {
         }
 
         @Override
-        public void changeState(Task task) {
-
+        public void changeState(Task task, State state) throws StateException {
+            throw new StateException("Вы не можете изменить состояние задачи, так как она уже выполнена!");
         }
 
         @Override
@@ -71,6 +81,6 @@ public enum State {
     }
 
     public abstract void deleteTak(Task task, List<Task> taskList) throws StateException;
-    public abstract void changeState(Task task);
+    public abstract void changeState(Task task, State state) throws StateException;
     public abstract void changeTaskDescription(Task task) throws StateException;
 }
