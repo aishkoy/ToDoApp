@@ -38,6 +38,14 @@ public class TaskManager {
         tasks.add(new Task(name, description, priority, creationDate, completionDate));
     }
 
+    public void changeTaskDescription(Task task) {
+        try {
+            task.getState().changeTaskDescription(task);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     private String choicePriority() {
         System.out.println("Выберите приоритет задачи: ");
         for (Priority priority : Priority.values()) {
