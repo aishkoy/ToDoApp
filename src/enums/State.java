@@ -1,46 +1,70 @@
 package enums;
 
+import model.Task;
+
+import java.util.List;
+
 public enum State {
     NEW("Новая") {
         @Override
-        void deleteTak() {
+        public void deleteTak(Task task, List<Task> taskList) {
 
         }
 
         @Override
-        void changeState() {
+        public void changeState(Task task) {
+
+        }
+
+        @Override
+        public void changeTaskDescription(Task task) {
 
         }
     },
     IN_PROGRESS("В процессе") {
         @Override
-        void deleteTak() {
+        public void deleteTak(Task task, List<Task> taskList) {
 
         }
 
         @Override
-        void changeState() {
+        public void changeState(Task task) {
+
+        }
+
+        @Override
+        public void changeTaskDescription(Task task) {
 
         }
     },
     DONE("Сделано") {
         @Override
-        void deleteTak() {
+        public void deleteTak(Task task, List<Task> taskList) {
 
         }
 
         @Override
-        void changeState() {
+        public void changeState(Task task) {
+
+        }
+
+        @Override
+        public void changeTaskDescription(Task task) {
 
         }
     };
 
-    private String stateStr;
+    private final String value;
 
-    State(String StateStr) {
-        this.stateStr = StateStr;
+    State(String value) {
+        this.value = value;
     }
 
-    abstract void deleteTak();
-    abstract void changeState();
+    public String getValue() {
+        return value;
+    }
+
+    public abstract void deleteTak(Task task, List<Task> taskList);
+    public abstract void changeState(Task task);
+    public abstract void changeTaskDescription(Task task);
 }
