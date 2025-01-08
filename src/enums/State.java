@@ -10,7 +10,8 @@ public enum State {
     NEW("Новая") {
         @Override
         public void deleteTak(Task task, List<Task> taskList) {
-
+            taskList.remove(task);
+            System.out.println("Задача была успешно удалена!");
         }
 
         @Override
@@ -28,8 +29,8 @@ public enum State {
     },
     IN_PROGRESS("В процессе") {
         @Override
-        public void deleteTak(Task task, List<Task> taskList) {
-
+        public void deleteTak(Task task, List<Task> taskList) throws StateException {
+            throw new StateException("Задача находится в процессе выполнения. Вы не можете ее удалить!");
         }
 
         @Override
@@ -44,8 +45,8 @@ public enum State {
     },
     DONE("Сделано") {
         @Override
-        public void deleteTak(Task task, List<Task> taskList) {
-
+        public void deleteTak(Task task, List<Task> taskList) throws StateException {
+            throw new StateException("Задача уже выполнена. Вы не можете ее удалить!");
         }
 
         @Override
@@ -69,7 +70,7 @@ public enum State {
         return value;
     }
 
-    public abstract void deleteTak(Task task, List<Task> taskList);
+    public abstract void deleteTak(Task task, List<Task> taskList) throws StateException;
     public abstract void changeState(Task task);
     public abstract void changeTaskDescription(Task task) throws StateException;
 }
