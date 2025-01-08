@@ -73,4 +73,17 @@ public class TaskManager {
             return getValidDate(message);
         }
     }
+
+    private State choiceState(Task task) {
+        int exceptionInt = 0;
+        System.out.println("Какой статус вы хотите назначить задаче?");
+        for(State state : State.values()) {
+            if(!task.getState().equals(state)) {
+                System.out.println(state.ordinal() + 1 + ". " + state.getValue());
+            }
+            exceptionInt = task.getState().ordinal()+1;
+        }
+        int choice = Integer.parseInt(IOManager.getValidInput("^[1-3](?!" + exceptionInt + ")$", "Введите число: "));
+        return State.values()[choice - 1];
+    }
 }
