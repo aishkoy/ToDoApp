@@ -13,4 +13,13 @@ public class TaskManager {
     public TaskManager(List<Task> tasks) {
         this.tasks = tasks;
     }
+
+    public void showAllTasks(){
+        if(tasks.isEmpty()){
+            System.out.println("Список задач пуст");
+            return;
+        }
+        System.out.println("Список всех задач: ");
+        tasks.forEach(System.out::println);
+    }
 }
