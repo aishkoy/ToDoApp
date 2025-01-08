@@ -3,6 +3,8 @@ package model;
 import enums.Priority;
 import services.IOManager;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,4 +36,14 @@ public class TaskManager {
         return Priority.values()[choice - 1].getValue();
     }
 
+    private LocalDate getValidDate(String message) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        try {
+            System.out.print(message);
+            return LocalDate.parse(IOManager.getValidInput("^([0-2]\\d|3[01])\\.(0\\d|1[0-2])\\.\\d{4}$", ""), formatter);
+        } catch (Exception e) {
+            System.out.println("Неверный ввод даты! Введите дату в формате 'dd.mm.yyyy'");
+            return getValidDate(message);
+        }
+    }
 }
