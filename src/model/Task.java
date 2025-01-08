@@ -1,5 +1,7 @@
 package model;
 
+import enums.State;
+
 import java.time.LocalDate;
 
 public class Task {
@@ -9,12 +11,23 @@ public class Task {
     private LocalDate creationDate;
     private LocalDate completionDate;
 
+    private State state;
+
     public Task(String name, String description, String priority, LocalDate completionDate, LocalDate creationDate) {
         this.name = name;
         this.description = description;
         this.completionDate = completionDate;
         this.creationDate = creationDate;
         this.priority = priority;
+        this.state = State.NEW;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 
     @Override
