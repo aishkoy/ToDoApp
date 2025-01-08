@@ -1,6 +1,7 @@
 package model;
 
 import enums.Priority;
+import enums.State;
 import services.IOManager;
 
 import java.time.LocalDate;
@@ -41,6 +42,14 @@ public class TaskManager {
     public void changeTaskDescription(Task task) {
         try {
             task.getState().changeTaskDescription(task);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void changeState(Task task) {
+        try{
+            task.getState().changeState(task, choiceState(task));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
