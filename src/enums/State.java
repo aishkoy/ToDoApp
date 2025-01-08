@@ -1,7 +1,7 @@
 package enums;
 
 public enum State {
-    NEW("New") {
+    NEW("Новая") {
         @Override
         void deleteTak() {
 
@@ -12,7 +12,7 @@ public enum State {
 
         }
     },
-    IN_PROGRESS("In Progress") {
+    IN_PROGRESS("В процессе") {
         @Override
         void deleteTak() {
 
@@ -23,7 +23,7 @@ public enum State {
 
         }
     },
-    DONE("Done") {
+    DONE("Сделано") {
         @Override
         void deleteTak() {
 

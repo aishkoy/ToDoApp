@@ -5,11 +5,11 @@ import java.time.LocalDate;
 public class Task {
     private String name;
     private String description;
-    private LocalDate completionDate;
-    private LocalDate creationDate;
     private String priority;
+    private LocalDate creationDate;
+    private LocalDate completionDate;
 
-    public Task(String name, String description, LocalDate completionDate, LocalDate creationDate, String priority) {
+    public Task(String name, String description, String priority, LocalDate completionDate, LocalDate creationDate) {
         this.name = name;
         this.description = description;
         this.completionDate = completionDate;
