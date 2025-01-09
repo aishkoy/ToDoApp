@@ -79,6 +79,10 @@ public class TaskManager {
         tasks.stream().sorted(isAscending ? Comparator.comparing(Task::getCreationDate) : Comparator.comparing(Task::getCreationDate).reversed()).forEach(System.out::println);
     }
 
+    public void filterByName(boolean isAscending) {
+        tasks.stream().sorted(isAscending ? Comparator.comparing(Task::getName) : Comparator.comparing(Task::getName).reversed()).forEach(System.out::println);
+    }
+
     public List<Task> getTasks() {
         return tasks;
     }
