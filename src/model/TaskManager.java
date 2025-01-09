@@ -7,6 +7,7 @@ import services.IOManager;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class TaskManager {
@@ -39,7 +40,7 @@ public class TaskManager {
     public void createTask() {
         String name = IOManager.getValidInput(".*", "Введите имя задачи: ");
         String description = IOManager.getValidInput(".*", "Введите описание задачи: ");
-        String priority = choicePriority();
+        Priority priority = choicePriority();
         LocalDate creationDate = getValidDate("Введите дату создания задачи: ");
         LocalDate completionDate = getValidDate("Введите дедлайн задачи: ");
 
@@ -70,17 +71,22 @@ public class TaskManager {
         }
     }
 
+    public void filterByPriority(boolean isAscending) {
+        tasks.stream().sorted(isAscending ? Comparator.comparing(Task::getPriority) : Comparator.comparing(Task::getPriority).reversed()).forEach(System.out::println);
+    }
+
+
     public List<Task> getTasks() {
         return tasks;
     }
 
-    private String choicePriority() {
+    private Priority choicePriority() {
         System.out.println("Выберите приоритет задачи: ");
         for (Priority priority : Priority.values()) {
             System.out.println(priority.ordinal() + 1 + ". " + priority.getValue());
         }
         int choice = Integer.parseInt(IOManager.getValidInput("^[1-3]$", "Введите число: "));
-        return Priority.values()[choice - 1].getValue();
+        return Priority.values()[choice - 1];
     }
 
     private LocalDate getValidDate(String message) {
