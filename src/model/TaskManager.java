@@ -70,6 +70,10 @@ public class TaskManager {
         }
     }
 
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
     private String choicePriority() {
         System.out.println("Выберите приоритет задачи: ");
         for (Priority priority : Priority.values()) {
