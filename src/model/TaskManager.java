@@ -13,7 +13,7 @@ public class TaskManager {
     private final List<Task> tasks;
 
     public TaskManager() {
-        tasks = new ArrayList<Task>();
+        tasks = new ArrayList<>();
     }
 
     public TaskManager(List<Task> tasks) {
@@ -37,8 +37,8 @@ public class TaskManager {
     }
 
     public void createTask() {
-        String name = IOManager.getValidInput("[\\s\\S]", "Введите имя задачи: ");
-        String description = IOManager.getValidInput("[\\s\\S]", "Введите описание задачи: ");
+        String name = IOManager.getValidInput(".*", "Введите имя задачи: ");
+        String description = IOManager.getValidInput(".*", "Введите описание задачи: ");
         String priority = choicePriority();
         LocalDate creationDate = getValidDate("Введите дату создания задачи: ");
         LocalDate completionDate = getValidDate("Введите дедлайн задачи: ");
@@ -96,6 +96,7 @@ public class TaskManager {
         for(State state : State.values()) {
             if(!task.getState().equals(state)) {
                 System.out.println(state.ordinal() + 1 + ". " + state.getValue());
+                continue;
             }
             exceptionInt = task.getState().ordinal()+1;
         }
