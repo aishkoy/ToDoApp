@@ -14,7 +14,7 @@ public class IOManager {
             System.out.print(message);
             String input = sc.nextLine().strip();
             if(!input.matches(regex) || input.isBlank()){
-                throw new IncorrectInputException("Неверный ввод! Попробуйте еще раз!");
+                throw new IncorrectInputException("\nНеверный ввод! Попробуйте еще раз!");
             }
             return input;
         } catch(Exception e){

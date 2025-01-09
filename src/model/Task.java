@@ -59,12 +59,13 @@ public class Task {
     public String toString() {
         return String.format("""
                 ╔═════════════════════════════════════════════════════════════════
-                ║ Name: %s
-                ║ Description: %s
-                ║ Creation Date: %s
-                ║ Completion Date: %s
-                ║ Priority: %s
+                ║ Имя: %s
+                ║ Описание: %s
+                ║ Дата создания: %s
+                ║ Дедлайн: %s
+                ║ Приоритет: %s
+                ║ Статус: %s
                 ╚═════════════════════════════════════════════════════════════════
-                """, name, description, completionDate, creationDate, priority);
+                """, name, description, completionDate, creationDate, priority.getValue(), state.getValue());
     }
 }

@@ -23,7 +23,7 @@ public class TaskManager {
 
     public void showAllTasks() {
         if (tasks.isEmpty()) {
-            System.out.println("Список задач пуст");
+            System.out.println("Список задач пуст. Добавьте новую задачу!");
             return;
         }
         System.out.println("Список всех задач: ");
@@ -55,7 +55,7 @@ public class TaskManager {
         }
     }
 
-    public void changeState(Task task) {
+    public void changeTaskState(Task task) {
         try{
             task.getState().changeState(task, choiceState(task));
         } catch (Exception e) {
@@ -71,15 +71,15 @@ public class TaskManager {
         }
     }
 
-    public void filterByPriority(boolean isAscending) {
+    public void sortByPriority(boolean isAscending) {
         tasks.stream().sorted(isAscending ? Comparator.comparing(Task::getPriority) : Comparator.comparing(Task::getPriority).reversed()).forEach(System.out::println);
     }
 
-    public void filterByCreationDate(boolean isAscending) {
+    public void sortByCreationDate(boolean isAscending) {
         tasks.stream().sorted(isAscending ? Comparator.comparing(Task::getCreationDate) : Comparator.comparing(Task::getCreationDate).reversed()).forEach(System.out::println);
     }
 
-    public void filterByName(boolean isAscending) {
+    public void sortByName(boolean isAscending) {
         tasks.stream().sorted(isAscending ? Comparator.comparing(Task::getName) : Comparator.comparing(Task::getName).reversed()).forEach(System.out::println);
     }
 

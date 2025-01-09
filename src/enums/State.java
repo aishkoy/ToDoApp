@@ -20,14 +20,14 @@ public enum State {
                 task.setState(IN_PROGRESS);
                 System.out.println("Статус задачи был успешно изменен на 'в процессе'.");
             } else if(state == State.DONE) {
-                throw new StateException("Вы не можете сменить статус задачи на 'сделано'!");
+                throw new StateException("Вы не можете сменить статус задачи на 'завершена'!");
             }
         }
 
         @Override
         public void changeTaskDescription(Task task) {
             System.out.println("Предыдущее описание задачи: " + task.getDescription());
-            String newDescription = IOManager.getValidInput("[\\s\\S]", "Введите новое описание задачи: ");
+            String newDescription = IOManager.getValidInput(".*", "Введите новое описание задачи: ");
             task.setDescription(newDescription);
             System.out.println("Описание задачи было успешно изменено!\n");
         }
@@ -42,7 +42,7 @@ public enum State {
         public void changeState(Task task, State state) throws StateException {
             if (state == State.DONE) {
                 task.setState(DONE);
-                System.out.println("Статус задачи был успешно изменен на 'сделано'.");
+                System.out.println("Статус задачи был успешно изменен на 'завершена'.");
             } else if (state == State.NEW) {
                 throw new StateException("Вы не можете изменить состояние задачи на 'новая'!");
             }
@@ -53,7 +53,7 @@ public enum State {
             throw new StateException("Задача находится в процессе выполнения. Вы не можете изменить описание задачи!");
         }
     },
-    DONE("Сделано") {
+    DONE("Завершена") {
         @Override
         public void deleteTak(Task task, List<Task> taskList) throws StateException {
             throw new StateException("Задача уже выполнена. Вы не можете ее удалить!");
