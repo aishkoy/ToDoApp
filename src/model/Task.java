@@ -5,11 +5,11 @@ import enums.State;
 import java.time.LocalDate;
 
 public class Task {
-    private String name;
+    private final String name;
     private String description;
-    private String priority;
-    private LocalDate creationDate;
-    private LocalDate completionDate;
+    private final String priority;
+    private final LocalDate creationDate;
+    private final LocalDate completionDate;
 
     private State state;
 
@@ -36,6 +36,10 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public LocalDate getCompletionDate(){
+        return completionDate;
     }
 
     @Override
