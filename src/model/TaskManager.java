@@ -26,7 +26,14 @@ public class TaskManager {
             return;
         }
         System.out.println("Список всех задач: ");
-        tasks.forEach(System.out::println);
+        for(Task task : tasks) {
+            if(task.getCompletionDate().isBefore(LocalDate.now())) {
+                System.out.println("*ПРОСРОЧЕННАЯ ЗАДАЧА: ");
+                System.out.println(task);
+                continue;
+            }
+            System.out.println(task);
+        }
     }
 
     public void createTask() {
