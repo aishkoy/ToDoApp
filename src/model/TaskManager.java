@@ -17,18 +17,14 @@ public class TaskManager {
         tasks = new ArrayList<>();
     }
 
-    public TaskManager(List<Task> tasks) {
-        this.tasks = tasks;
-    }
-
     public void showAllTasks() {
         if (tasks.isEmpty()) {
             System.out.println("Список задач пуст. Добавьте новую задачу!");
             return;
         }
         System.out.println("Список всех задач: ");
-        for(Task task : tasks) {
-            if(task.getCompletionDate().isBefore(LocalDate.now())) {
+        for (Task task : tasks) {
+            if (task.getCompletionDate().isBefore(LocalDate.now())) {
                 System.out.println("*ПРОСРОЧЕННАЯ ЗАДАЧА: ");
                 System.out.println(task);
                 continue;
@@ -56,7 +52,7 @@ public class TaskManager {
     }
 
     public void changeTaskState(Task task) {
-        try{
+        try {
             task.getState().changeState(task, choiceState(task));
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -64,7 +60,7 @@ public class TaskManager {
     }
 
     public void deleteTask(Task task) {
-        try{
+        try {
             task.getState().deleteTak(task, this.tasks);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -80,19 +76,27 @@ public class TaskManager {
     }
 
     public void sortByPriority(boolean isAscending) {
-        tasks.stream().sorted(isAscending ? Comparator.comparing(Task::getPriority) : Comparator.comparing(Task::getPriority).reversed()).forEach(System.out::println);
+        tasks.stream()
+                .sorted(isAscending ? Comparator.comparing(Task::getPriority) : Comparator.comparing(Task::getPriority).reversed())
+                .forEach(System.out::println);
     }
 
     public void sortByCreationDate(boolean isAscending) {
-        tasks.stream().sorted(isAscending ? Comparator.comparing(Task::getCreationDate) : Comparator.comparing(Task::getCreationDate).reversed()).forEach(System.out::println);
+        tasks.stream()
+                .sorted(isAscending ? Comparator.comparing(Task::getCreationDate) : Comparator.comparing(Task::getCreationDate).reversed())
+                .forEach(System.out::println);
     }
 
     public void sortByName(boolean isAscending) {
-        tasks.stream().sorted(isAscending ? Comparator.comparing(Task::getName) : Comparator.comparing(Task::getName).reversed()).forEach(System.out::println);
+        tasks.stream()
+                .sorted(isAscending ? Comparator.comparing(Task::getName) : Comparator.comparing(Task::getName).reversed())
+                .forEach(System.out::println);
     }
 
     public void sortByDescription(boolean isAscending) {
-        tasks.stream().sorted(isAscending ? Comparator.comparing(Task::getDescription) : Comparator.comparing(Task::getDescription).reversed()).forEach(System.out::println);
+        tasks.stream()
+                .sorted(isAscending ? Comparator.comparing(Task::getDescription) : Comparator.comparing(Task::getDescription).reversed())
+                .forEach(System.out::println);
     }
 
     public void filterByKeyword(String word){
@@ -101,13 +105,16 @@ public class TaskManager {
                 .forEach(System.out::println);
     }
 
-    public void filterByMonth(int monthNum){
+    public void filterByDate(){
+        LocalDate start = getValidDate("Введите начальную дату: ");
+        LocalDate end = getValidDate("Введите конечную дату: ");
         tasks.stream()
-                .filter(task -> task.getCompletionDate().getMonthValue() == monthNum)
+                .filter(task -> task.getCompletionDate().isAfter(start) && task.getCompletionDate().isBefore(end))
                 .forEach(System.out::println);
     }
 
-    public void filterByPriority(Priority priority){
+    public void filterByPriority(){
+        Priority priority = choicePriority();
         tasks.stream()
                 .filter(task -> task.getPriority() == priority)
                 .forEach(System.out::println);
@@ -117,7 +124,11 @@ public class TaskManager {
         return tasks;
     }
 
-    private Priority choicePriority() {
+    public void setTasks(List<Task> tasks) {
+        this.tasks.addAll(tasks);
+    }
+
+    private static Priority choicePriority() {
         System.out.println("Выберите приоритет задачи: ");
         for (Priority priority : Priority.values()) {
             System.out.println(priority.ordinal() + 1 + ". " + priority.getValue());
@@ -140,12 +151,12 @@ public class TaskManager {
     private State choiceState(Task task) {
         int exceptionInt = 0;
         System.out.println("Какой статус вы хотите назначить задаче?");
-        for(State state : State.values()) {
-            if(!task.getState().equals(state)) {
+        for (State state : State.values()) {
+            if (!task.getState().equals(state)) {
                 System.out.println(state.ordinal() + 1 + ". " + state.getValue());
                 continue;
             }
-            exceptionInt = task.getState().ordinal()+1;
+            exceptionInt = task.getState().ordinal() + 1;
         }
         int choice = Integer.parseInt(IOManager.getValidInput("^[1-3](?!" + exceptionInt + ")$", "Введите число: "));
         return State.values()[choice - 1];

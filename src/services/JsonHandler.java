@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JsonHandler {
-    private List<Task> tasks = new ArrayList<>();
+    private static List<Task> tasks = new ArrayList<>();
     private static final Type TASK_TYPE = new TypeToken<List<Task>>() {}.getType();
 
     private static Path PATH;
@@ -26,18 +26,16 @@ public class JsonHandler {
     private static final Gson GSON = Converters.registerAll(new GsonBuilder())
             .setPrettyPrinting().serializeNulls().create();
 
-    private JsonHandler(String fileName) {
+    private JsonHandler() {}
+
+    public static void readJson(String fileName) {
         PATH = Paths.get(DIRECTORY_PATH, fileName);
         try {
             String json = Files.readString(getPath(fileName));
-            this.tasks = GSON.fromJson(json, TASK_TYPE);
+            tasks = GSON.fromJson(json, TASK_TYPE);
         } catch (IOException e) {
             System.out.println("Произошла ошибка при чтении файла: " + e.getMessage());
         }
-    }
-
-    public static void readJson(String json) {
-        new JsonHandler(json);
     }
 
     public static void writeFile(List<Task> tasks) {
@@ -70,7 +68,7 @@ public class JsonHandler {
             System.out.println("Пустой json файл с именем " + fileName + " был создан.");
             PATH = Paths.get(fullPath);
         } catch (IOException e) {
-            System.out.println("Произошла ошибка при создании файла: " + e.getMessage());;
+            System.out.println("Произошла ошибка при создании файла: " + e.getMessage());
         }
     }
 
@@ -87,7 +85,7 @@ public class JsonHandler {
         }
     }
 
-    public List<Task> getTasks() {
+    public static List<Task> getTasks() {
         return tasks;
     }
 }
