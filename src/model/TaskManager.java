@@ -87,6 +87,12 @@ public class TaskManager {
         tasks.stream().sorted(isAscending ? Comparator.comparing(Task::getDescription) : Comparator.comparing(Task::getDescription).reversed()).forEach(System.out::println);
     }
 
+    public void filterByKeyword(String word){
+        tasks.stream()
+                .filter(task -> task.getName().toLowerCase().contains(word.toLowerCase()))
+                .forEach(System.out::println);
+    }
+
     public List<Task> getTasks() {
         return tasks;
     }
