@@ -83,6 +83,10 @@ public class TaskManager {
         tasks.stream().sorted(isAscending ? Comparator.comparing(Task::getName) : Comparator.comparing(Task::getName).reversed()).forEach(System.out::println);
     }
 
+    public void sortByDescription(boolean isAscending) {
+        tasks.stream().sorted(isAscending ? Comparator.comparing(Task::getDescription) : Comparator.comparing(Task::getDescription).reversed()).forEach(System.out::println);
+    }
+
     public List<Task> getTasks() {
         return tasks;
     }
