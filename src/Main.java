@@ -11,7 +11,9 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Добро пожаловать!\n");
         JsonHandler.readJson(IOManager.getValidInput("[a-zA-Z_.]+", "Введите имя файла (пример: something.json): "));
+        tm.setTasks(JsonHandler.getTasks());
         run();
+        System.out.println("До свиданья!");
     }
 
     private static void run() {
@@ -25,23 +27,34 @@ public class Main {
                     3. - Изменить описание задачи
                     4. - Изменить статус задачи
                     5. - Удалить задачу
+                    6. - Оценить задачу
                     
-                    6. - Отсортировать по названию
-                    7. - Отсортировать по приоритету
-                    8. - Отсортировать по дате создания
+                    7. - Отсортировать по названию
+                    8. - Отсортировать по приоритету
+                    9. - Отсортировать по дате создания
+                    10. - Отсортировать по описанию
+                    
+                    11. - Отфильтровать по ключевому слову в имени задачи
+                    12. - Отфильтровать по месяцу
+                    13. - Отфильтровать по приоритету
                     
                     0 - Выйти
                     """);
-            String choice = IOManager.getValidInput("^[0-9]$", "Введите число: ");
+            String choice = IOManager.getValidInput("^(1[0-3]|[0-9])$", "Введите число: ");
             switch (choice) {
                 case "1" -> tm.showAllTasks();
                 case "2" -> tm.createTask();
                 case "3" -> tm.changeTaskDescription(getTask());
                 case "4" -> tm.changeTaskState(getTask());
                 case "5" -> tm.deleteTask(getTask());
-                case "6" -> tm.sortByName(askSortOrder());
-                case "7" -> tm.sortByPriority(askSortOrder());
-                case "8" -> tm.sortByCreationDate(askSortOrder());
+                case "6" -> tm.rateTask(getTask());
+                case "7" -> tm.sortByName(askSortOrder());
+                case "8" -> tm.sortByPriority(askSortOrder());
+                case "9" -> tm.sortByCreationDate(askSortOrder());
+                case "10" -> tm.sortByDescription(askSortOrder());
+                case "11" -> tm.filterByKeyword(IOManager.getValidInput(".*", "Введите ключевое слово: "));
+                case "12" -> tm.filterByDate();
+                case "13" -> tm.filterByPriority();
                 case "0" -> {
                     break AppExit;
                 }
@@ -66,7 +79,7 @@ public class Main {
         if(tasks.isEmpty()){
             System.out.println("Список задач пуст. Создайте задачу!");
             return null;
-        };
+        }
 
         System.out.println("Список задач: ");
         for(int i = 0 ; i < tasks.size() ; i++){
@@ -77,7 +90,7 @@ public class Main {
         do{
             taskIndex = Integer.parseInt(IOManager.getValidInput("[1-9]\\d*", "Введите номер задачи: "));
             if(taskIndex < 1 || taskIndex > tasks.size()){
-                System.out.println("Неверный ввод!");
+                System.out.println("Неверный ввод! ");
             }
         } while(taskIndex < 1 || taskIndex > tasks.size());
 
