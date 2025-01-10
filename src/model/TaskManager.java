@@ -71,6 +71,14 @@ public class TaskManager {
         }
     }
 
+    public void rateTask(Task task) {
+        try{
+            task.getState().rateTask(task);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public void sortByPriority(boolean isAscending) {
         tasks.stream().sorted(isAscending ? Comparator.comparing(Task::getPriority) : Comparator.comparing(Task::getPriority).reversed()).forEach(System.out::println);
     }
