@@ -99,6 +99,12 @@ public class TaskManager {
                 .forEach(System.out::println);
     }
 
+    public void filterByPriority(Priority priority){
+        tasks.stream()
+                .filter(task -> task.getPriority() == priority)
+                .forEach(System.out::println);
+    }
+
     public List<Task> getTasks() {
         return tasks;
     }
