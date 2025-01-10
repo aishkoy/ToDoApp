@@ -31,6 +31,11 @@ public enum State {
             task.setDescription(newDescription);
             System.out.println("Описание задачи было успешно изменено!\n");
         }
+
+        @Override
+        public void rateTask(Task task) throws StateException {
+            throw new StateException("Вы не можете дать оценку задаче, когда она только создана!");
+        }
     },
     IN_PROGRESS("В процессе") {
         @Override
@@ -52,6 +57,11 @@ public enum State {
         public void changeTaskDescription(Task task) throws StateException {
             throw new StateException("Задача находится в процессе выполнения. Вы не можете изменить описание задачи!");
         }
+
+        @Override
+        public void rateTask(Task task) throws StateException {
+            throw new StateException("Вы не можете оценить задачу при выполнении!");
+        }
     },
     DONE("Завершена") {
         @Override
@@ -68,6 +78,12 @@ public enum State {
         public void changeTaskDescription(Task task) throws StateException {
             throw new StateException("Задача уже выполнена. Вы не можете изменить ее описание!");
         }
+
+        @Override
+        public void rateTask(Task task){
+            task.setRating(IOManager.getValidInput("^(10|[1-9])$", "Оцените задачу (1-10): "));
+            System.out.println("Задача была успешно оценена!");
+        }
     };
 
     private final String value;
@@ -83,4 +99,5 @@ public enum State {
     public abstract void deleteTak(Task task, List<Task> taskList) throws StateException;
     public abstract void changeState(Task task, State state) throws StateException;
     public abstract void changeTaskDescription(Task task) throws StateException;
+    public abstract void rateTask(Task task) throws StateException;
 }
