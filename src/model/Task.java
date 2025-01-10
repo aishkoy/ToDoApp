@@ -11,7 +11,7 @@ public class Task {
     private final Priority priority;
     private final LocalDate creationDate;
     private final LocalDate completionDate;
-
+    private String rating;
     private State state;
 
     public Task(String name, String description, Priority priority, LocalDate completionDate, LocalDate creationDate) {
@@ -21,6 +21,7 @@ public class Task {
         this.creationDate = creationDate;
         this.priority = priority;
         this.state = State.NEW;
+        this.rating = "не выставлена";
     }
 
     public State getState() {
@@ -55,6 +56,10 @@ public class Task {
         return name;
     }
 
+    public String getRating() {return rating;}
+
+    public void setRating(String rating) {this.rating = rating;}
+
     @Override
     public String toString() {
         return String.format("""
@@ -65,7 +70,8 @@ public class Task {
                 ║ Дедлайн: %s
                 ║ Приоритет: %s
                 ║ Статус: %s
+                ║ Оценка: %s
                 ╚═════════════════════════════════════════════════════════════════
-                """, name, description, completionDate, creationDate, priority.getValue(), state.getValue());
+                """, name, description, completionDate, creationDate, priority.getValue(), state.getValue(), rating);
     }
 }
