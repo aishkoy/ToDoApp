@@ -93,6 +93,12 @@ public class TaskManager {
                 .forEach(System.out::println);
     }
 
+    public void filterByMonth(int monthNum){
+        tasks.stream()
+                .filter(task -> task.getCompletionDate().getMonthValue() == monthNum)
+                .forEach(System.out::println);
+    }
+
     public List<Task> getTasks() {
         return tasks;
     }
