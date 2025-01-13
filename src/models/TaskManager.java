@@ -1,7 +1,8 @@
-package model;
+package models;
 
 import enums.Priority;
 import enums.State;
+import exceptions.EmptyTaskListException;
 import services.IOManager;
 
 import java.time.LocalDate;
@@ -19,9 +20,9 @@ public class TaskManager {
 
     public void showAllTasks() {
         if (tasks.isEmpty()) {
-            System.out.println("Список задач пуст. Добавьте новую задачу!");
-            return;
+            throw new EmptyTaskListException();
         }
+
         System.out.println("Список всех задач: ");
         for (Task task : tasks) {
             if (task.getCompletionDate().isBefore(LocalDate.now())) {

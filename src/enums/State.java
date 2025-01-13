@@ -1,7 +1,7 @@
 package enums;
 
 import exceptions.StateException;
-import model.Task;
+import models.Task;
 import services.IOManager;
 
 import java.util.List;

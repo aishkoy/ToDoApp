@@ -1,4 +1,4 @@
-package model;
+package models;
 
 import enums.Priority;
 import enums.State;
@@ -21,7 +21,7 @@ public class Task {
         this.creationDate = creationDate;
         this.priority = priority;
         this.state = State.NEW;
-        this.rating = "не выставлена";
+        this.rating = "Не выставлена";
     }
 
     public State getState() {
