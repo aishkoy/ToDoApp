@@ -33,10 +33,10 @@ public class JsonHandler {
             PATH = getPath(fileName);
             String json = Files.readString(PATH);
             tasks = GSON.fromJson(json, TYPE);
-        }catch (FileNotFoundException e){
+        } catch (FileNotFoundException e){
             System.out.println(e.getMessage());
             offerFileAction();
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("Произошла ошибка при чтении файла: " + e.getMessage());
         }
     }
@@ -68,13 +68,13 @@ public class JsonHandler {
                 2. - Создать файл""");
         String choice = IOManager.getValidInput("[1-2]", "Введите число: ");
         switch (choice){
-            case "1" -> readJson(IOManager.getValidInput("[a-zA-Z0-9._-]+", "Введите имя файла: "));
+            case "1" -> readJson(IOManager.getValidInput("[a-zA-Z0-9._-]+", "Введите имя файла (пример: something.json): "));
             case "2" -> createFile();
         }
     }
 
     private static void createFile(){
-        String fileName = IOManager.getValidInput("[a-zA-Z0-9._-]+", "Введите имя файла: ");
+        String fileName = IOManager.getValidInput("[a-zA-Z0-9._-]+", "Введите имя файла (пример: something.json): ");
         String fullPath = DIRECTORY + fileName;
         try(FileWriter _ = new FileWriter(fullPath)){
             System.out.println("Пустой файл " + fileName + " был успешно создан!");

@@ -12,36 +12,34 @@ import java.util.Comparator;
 import java.util.List;
 
 public class TaskManager {
-    private final List<Task> tasks;
+    private List<Task> tasks;
 
     public TaskManager() {
         tasks = new ArrayList<>();
     }
 
-    public void showAllTasks() {
-        if (tasks.isEmpty()) {
-            throw new EmptyTaskListException();
-        }
+    public List<Task> getTasks() {
+        return tasks;
+    }
 
-        System.out.println("Список всех задач: ");
-        for (Task task : tasks) {
-            if (task.getCompletionDate().isBefore(LocalDate.now())) {
-                System.out.println("*ПРОСРОЧЕННАЯ ЗАДАЧА: ");
-                System.out.println(task);
-                continue;
-            }
-            System.out.println(task);
+    public void setTasks(List<Task> tasks) {
+        if (tasks == null) {
+            this.tasks = new ArrayList<>();
+            return;
         }
+        this.tasks.addAll(tasks);
+    }
+
+    public void showAllTasks() {
+        printTasks(tasks, "");
     }
 
     public void createTask() {
         String name = IOManager.getValidInput(".*", "Введите имя задачи: ");
         String description = IOManager.getValidInput(".*", "Введите описание задачи: ");
         Priority priority = choicePriority();
-        LocalDate creationDate = getValidDate("Введите дату создания задачи: ");
-        LocalDate completionDate = getValidDate("Введите дедлайн задачи: ");
-
-        tasks.add(new Task(name, description, priority, creationDate, completionDate));
+        LocalDate[] dates = getDatesFromUser("Введите дату создания: ", "Введите дедлайн: ");
+        tasks.add(new Task(name, description, priority, dates[0], dates[1]));
     }
 
     public void changeTaskDescription(Task task) {
@@ -101,32 +99,31 @@ public class TaskManager {
     }
 
     public void filterByKeyword(String word){
-        tasks.stream()
+        List<Task> filteredTasks = tasks.stream()
                 .filter(task -> task.getName().toLowerCase().contains(word.toLowerCase()))
-                .forEach(System.out::println);
+                .toList();
+
+        printTasks(filteredTasks, "Нет задач с таким ключевым словом в названии!");
     }
 
     public void filterByDate(){
-        LocalDate start = getValidDate("Введите начальную дату: ");
-        LocalDate end = getValidDate("Введите конечную дату: ");
-        tasks.stream()
-                .filter(task -> task.getCompletionDate().isAfter(start) && task.getCompletionDate().isBefore(end))
-                .forEach(System.out::println);
+        LocalDate[] dates = getDatesFromUser("Введите начальную дату: ", "Введите конечную дату: ");
+
+        List<Task> filteredTasks = tasks.stream()
+                .filter(task -> task.getCompletionDate().isAfter(dates[0]) && task.getCompletionDate().isBefore(dates[1]))
+                .toList();
+
+        printTasks(filteredTasks, "Нет задач в указанном временном диапазоне!");
     }
 
     public void filterByPriority(){
         Priority priority = choicePriority();
-        tasks.stream()
+
+        List<Task> filteredTasks = tasks.stream()
                 .filter(task -> task.getPriority() == priority)
-                .forEach(System.out::println);
-    }
+                .toList();
 
-    public List<Task> getTasks() {
-        return tasks;
-    }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks.addAll(tasks);
+        printTasks(filteredTasks, "Нет задач с таким приоритетом!");
     }
 
     private static Priority choicePriority() {
@@ -138,11 +135,28 @@ public class TaskManager {
         return Priority.values()[choice - 1];
     }
 
+    private LocalDate[] getDatesFromUser(String start, String end) {
+        LocalDate[] dates = new LocalDate[2];
+        do{
+            dates[0] = getValidDate(start);
+            dates[1] = getValidDate(end);
+        } while(!isDatesValid(dates[0], dates[1]));
+
+        return dates;
+    }
+
+    private boolean isDatesValid(LocalDate start, LocalDate end){
+        if (start.isAfter(end)) {
+            System.out.println("\nНачальная дата не может быть позже конечной даты! Попробуйте снова!");
+            return false;
+        }
+        return true;
+    }
+
     private LocalDate getValidDate(String message) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         try {
-            System.out.print(message);
-            return LocalDate.parse(IOManager.getValidInput("^([0-2]\\d|3[01])\\.(0\\d|1[0-2])\\.\\d{4}$", ""), formatter);
+            return LocalDate.parse(IOManager.getValidInput("^([0-2]\\d|3[01])\\.(0\\d|1[0-2])\\.\\d{4}$", message), formatter);
         } catch (Exception e) {
             System.out.println("Неверный ввод даты! Введите дату в формате 'dd.mm.yyyy'");
             return getValidDate(message);
@@ -151,7 +165,7 @@ public class TaskManager {
 
     private State choiceState(Task task) {
         int exceptionInt = 0;
-        System.out.println("Какой статус вы хотите назначить задаче?");
+        System.out.println("\nКакой статус вы хотите назначить задаче?");
         for (State state : State.values()) {
             if (!task.getState().equals(state)) {
                 System.out.println(state.ordinal() + 1 + ". " + state.getValue());
@@ -159,7 +173,23 @@ public class TaskManager {
             }
             exceptionInt = task.getState().ordinal() + 1;
         }
-        int choice = Integer.parseInt(IOManager.getValidInput("^[1-3](?!" + exceptionInt + ")$", "Введите число: "));
+
+        int choice = Integer.parseInt(IOManager.getValidInput("^[1-3]$", "Введите число: "));
+
+        if(exceptionInt == choice){
+            System.out.println("Неверный ввод! Введите только указанные цифры!");
+            return choiceState(task);
+        }
+
         return State.values()[choice - 1];
+    }
+
+    private void printTasks(List<Task> tasks, String message) {
+        if (tasks.isEmpty()) {
+            throw new EmptyTaskListException(message);
+        } else {
+            System.out.println("\n═══════════════════════════════ СПИСОК ЗАДАЧ ═══════════════════════════════");
+            tasks.forEach(System.out::println);
+        }
     }
 }

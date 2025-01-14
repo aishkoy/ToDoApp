@@ -80,7 +80,11 @@ public enum State {
         }
 
         @Override
-        public void rateTask(Task task){
+        public void rateTask(Task task) throws StateException {
+            if(!task.getRating().equalsIgnoreCase("Не выставлена")) {
+                throw new StateException("Вы уже оценили задачу!");
+            }
+
             task.setRating(IOManager.getValidInput("^(10|[1-9])$", "Оцените задачу (1-10): "));
             System.out.println("Задача была успешно оценена!");
         }
