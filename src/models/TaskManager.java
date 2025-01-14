@@ -36,7 +36,7 @@ public class TaskManager {
 
     public void createTask() {
         String name = IOManager.getValidInput(".*", "Введите имя задачи: ");
-        String description = IOManager.getValidInput(".*", "Введите описание задачи: ");
+        String description = getUserDescription();
         Priority priority = choicePriority();
         LocalDate[] dates = getDatesFromUser("Введите дату создания: ", "Введите дедлайн: ");
         tasks.add(new Task(name, description, priority, dates[0], dates[1]));
@@ -67,7 +67,7 @@ public class TaskManager {
     }
 
     public void rateTask(Task task) {
-        try{
+        try {
             task.getState().rateTask(task);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -98,7 +98,7 @@ public class TaskManager {
                 .forEach(System.out::println);
     }
 
-    public void filterByKeyword(String word){
+    public void searchByKeyword(String word) {
         List<Task> filteredTasks = tasks.stream()
                 .filter(task -> task.getName().toLowerCase().contains(word.toLowerCase()))
                 .toList();
@@ -106,7 +106,7 @@ public class TaskManager {
         printTasks(filteredTasks, "Нет задач с таким ключевым словом в названии!");
     }
 
-    public void filterByDate(){
+    public void searchByDate() {
         LocalDate[] dates = getDatesFromUser("Введите начальную дату: ", "Введите конечную дату: ");
 
         List<Task> filteredTasks = tasks.stream()
@@ -116,7 +116,7 @@ public class TaskManager {
         printTasks(filteredTasks, "Нет задач в указанном временном диапазоне!");
     }
 
-    public void filterByPriority(){
+    public void filterByPriority() {
         Priority priority = choicePriority();
 
         List<Task> filteredTasks = tasks.stream()
@@ -124,6 +124,50 @@ public class TaskManager {
                 .toList();
 
         printTasks(filteredTasks, "Нет задач с таким приоритетом!");
+    }
+
+    public void searchByPriority() {
+        String priorityStr = IOManager.getValidInput(".*", "Введите приоритет: ");
+        for(Priority priority : Priority.values()) {
+            if(priority.getValue().equalsIgnoreCase(priorityStr)) {
+                List<Task> filteredTasks =  tasks.stream()
+                        .filter(task -> task.getPriority() == priority)
+                        .toList();
+                printTasks(filteredTasks, "Нет задач с таким приоритетом!");
+                return;
+            }
+        }
+        System.out.println("Не существует такого приоритета задач!");
+    }
+
+    public void filterByName(String name){
+        List<Task> filteredTasks = tasks.stream()
+                .filter(task -> task.getName().equalsIgnoreCase(name.toLowerCase()))
+                .toList();
+
+        printTasks(filteredTasks, "Нет задач с таким именем!");
+    }
+
+    public void filterByCreationDate() {
+        LocalDate creationDateSearch = getValidDate("Введите дату создания: ");
+        List<Task> filteredTasks = tasks.stream()
+                .filter(task -> task.getCreationDate() == creationDateSearch)
+                .toList();
+        printTasks(filteredTasks, "Нет задач, созданных в данную дату");
+    }
+
+    private String getUserDescription() {
+        System.out.println("""
+                
+                Вы можете ввести описание или оставить его пустым на данный момент
+                1. Ввести описание
+                2. Пропустить этот шаг
+                """);
+        String choice = IOManager.getValidInput("^[1-2]$", "Введите число: ");
+
+        return choice.equals("1")
+                ? IOManager.getValidInput(".*", "Введите описание задачи: ")
+                : " ";
     }
 
     private static Priority choicePriority() {
@@ -137,15 +181,15 @@ public class TaskManager {
 
     private LocalDate[] getDatesFromUser(String start, String end) {
         LocalDate[] dates = new LocalDate[2];
-        do{
+        do {
             dates[0] = getValidDate(start);
             dates[1] = getValidDate(end);
-        } while(!isDatesValid(dates[0], dates[1]));
+        } while (!isDatesValid(dates[0], dates[1]));
 
         return dates;
     }
 
-    private boolean isDatesValid(LocalDate start, LocalDate end){
+    private boolean isDatesValid(LocalDate start, LocalDate end) {
         if (start.isAfter(end)) {
             System.out.println("\nНачальная дата не может быть позже конечной даты! Попробуйте снова!");
             return false;
@@ -176,7 +220,7 @@ public class TaskManager {
 
         int choice = Integer.parseInt(IOManager.getValidInput("^[1-3]$", "Введите число: "));
 
-        if(exceptionInt == choice){
+        if (exceptionInt == choice) {
             System.out.println("Неверный ввод! Введите только указанные цифры!");
             return choiceState(task);
         }
