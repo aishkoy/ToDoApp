@@ -1,7 +1,7 @@
 [
   {
-    "name": "dsfs",
-    "description": "sdf",
+    "name": "ничего не делать",
+    "description": "могу рано лечь спать",
     "priority": "HIGH",
     "creationDate": "2025-02-12",
     "completionDate": "2026-02-12",
@@ -18,11 +18,20 @@
     "state": "NEW"
   },
   {
-    "name": "jkl;",
-    "description": "kjkl",
+    "name": "какое-то название",
+    "description": "какое-то описание",
     "priority": "HIGH",
     "creationDate": "2021-01-02",
     "completionDate": "2022-01-02",
+    "rating": "Не выставлена",
+    "state": "DONE"
+  },
+  {
+    "name": "не придумала",
+    "description": " ",
+    "priority": "HIGH",
+    "creationDate": "2025-02-12",
+    "completionDate": "2026-02-12",
     "rating": "Не выставлена",
     "state": "NEW"
   }

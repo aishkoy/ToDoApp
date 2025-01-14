@@ -30,6 +30,7 @@ public class UserIO {
                         МЕНЮ ДЕЙСТВИЙ:
                 1.  - Отобразить все задачи
                 2.  - Добавить новую задачу
+                
                 3.  - Изменить описание задачи
                 4.  - Изменить статус задачи
                 5.  - Удалить задачу
@@ -40,31 +41,35 @@ public class UserIO {
                 9.  - Отсортировать по дате создания
                 10. - Отсортировать по описанию
                 
-                11. - Отфильтровать по ключевому слову в имени задачи
-                12. - Отфильтровать задачи по временному диапазону
-                13. - Отфильтровать по приоритету
+                11. - Поиск по ключевому слову в имени задачи
+                12. - Поиск задач по временному диапазону
+                13. - Поиск по приоритету
+                
+                14. - Отфильтровать задачи по имени
+                15. - Отфильтровать задачи по дате создания
+                16. - Отфильтровать задачи по приоритету
                 
                 0 - Выйти
                 """);
     }
 
     private void processMenuChoice() {
-        String choice = IOManager.getValidInput("^(1[0-3]|[0-9])$", "Введите число: ");
+        String choice = IOManager.getValidInput("^(1[0-6]|[0-9])$", "Введите число: ");
         try {
             switch (choice) {
                 case "1" -> tm.showAllTasks();
                 case "2" -> tm.createTask();
                 case "3", "4", "5", "6" -> processWithTask(choice);
                 case "7", "8", "9", "10" -> sortTasks(choice);
-                case "11", "12", "13" -> filterTasks(choice);
+                case "11", "12", "13" -> searchAction(choice);
+                case "14", "15", "16" -> filterTasks(choice);
                 case "0" -> {
                     System.out.println("\nДо свиданья!");
                     System.exit(0);
                 }
             }
         } catch (EmptyTaskListException e) {
-            System.out.println("Список задач пуст! Создайте задачу!");
-            System.out.println(e.getMessage());
+            System.out.println("Список задач пуст: " + e.getMessage());
         }
     }
 
@@ -94,15 +99,27 @@ public class UserIO {
         }
     }
 
+    private void searchAction(String number) {
+        if (tm.getTasks().isEmpty()) {
+            throw new EmptyTaskListException();
+        }
+
+        switch (number) {
+            case "11" -> tm.searchByKeyword(IOManager.getValidInput(".*", "Введите ключевое слово: "));
+            case "12" -> tm.searchByDate();
+            case "13" -> tm.searchByPriority();
+        }
+    }
+
     private void filterTasks(String number) {
         if (tm.getTasks().isEmpty()) {
             throw new EmptyTaskListException();
         }
 
         switch (number) {
-            case "11" -> tm.filterByKeyword(IOManager.getValidInput(".*", "Введите ключевое слово: "));
-            case "12" -> tm.filterByDate();
-            case "13" -> tm.filterByPriority();
+            case "14" -> tm.filterByName(IOManager.getValidInput(".*", "Введите полное имя задачи: "));
+            case "15" -> tm.filterByCreationDate();
+            case "16" -> tm.filterByPriority();
         }
     }
 

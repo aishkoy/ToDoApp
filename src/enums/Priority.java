@@ -1,9 +1,9 @@
 package enums;
 
 public enum Priority {
-    LOW("Низкая"),
-    MEDIUM("Средняя"),
-    HIGH("Высокая");
+    LOW("Низкий"),
+    MEDIUM("Средний"),
+    HIGH("Высокий");
 
     private final String value;
     Priority(String priority) {
