@@ -14,11 +14,11 @@ public class Task {
     private String rating;
     private State state;
 
-    public Task(String name, String description, Priority priority, LocalDate completionDate, LocalDate creationDate) {
+    public Task(String name, String description, Priority priority, LocalDate creationDate, LocalDate completionDate) {
         this.name = name;
         this.description = description;
-        this.completionDate = completionDate;
         this.creationDate = creationDate;
+        this.completionDate = completionDate;
         this.priority = priority;
         this.state = State.NEW;
         this.rating = "Не выставлена";
@@ -62,8 +62,10 @@ public class Task {
 
     @Override
     public String toString() {
+        boolean isOverdue = completionDate.isBefore(LocalDate.now());
+        String overdue = isOverdue ? "*просроченная задача\n" : "";
         return String.format("""
-                ╔═════════════════════════════════════════════════════════════════
+                %s╔═════════════════════════════════════════════════════════════════
                 ║ Имя: %s
                 ║ Описание: %s
                 ║ Дата создания: %s
@@ -72,6 +74,6 @@ public class Task {
                 ║ Статус: %s
                 ║ Оценка: %s
                 ╚═════════════════════════════════════════════════════════════════
-                """, name, description, completionDate, creationDate, priority.getValue(), state.getValue(), rating);
+                """,overdue, name, description, creationDate, completionDate, priority.getValue(), state.getValue(), rating);
     }
 }
